@@ -1,0 +1,46 @@
+name: build sample code
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  codegen:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        go: [1.18]
+        include:
+          - os: ubuntu-latest
+            go-build: ~/.cache/go-build
+    name: ${{ matrix.os }} @ Go ${{ matrix.go }}
+    runs-on: ${{ matrix.os }}
+    env:
+      GO111MODULE: on
+      GOPROXY: https://proxy.golang.org
+    steps:
+      - name: Set up Go ${{ matrix.go }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.go-build }}
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Build Server and Client
+        run: |
+          make build
