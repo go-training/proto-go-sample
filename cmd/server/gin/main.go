@@ -1,9 +1,13 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -38,7 +42,18 @@ func main() {
 		MaxHeaderBytes:    8 * 1024, // 8KiB
 	}
 
-	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		log.Fatalf("HTTP listen and serve: %v", err)
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("HTTP listen and serve: %v", err)
+		}
+	}()
+
+	<-signals
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatalf("HTTP shutdown: %v", err) // nolint:gocritic
 	}
 }
