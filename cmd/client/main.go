@@ -20,11 +20,28 @@ import (
 )
 
 func healthCheck(client *http.Client, services ...string) {
+	healthClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
+		client,
+		"http://localhost:8080/grpc.health.v1.Health/Check",
+	)
+
 	grpcHealthClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
 		client,
 		"http://localhost:8080/grpc.health.v1.Health/Check",
 		connect.WithGRPC(),
 	)
+
+	grpcHealthWebClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
+		client,
+		"http://localhost:8080/grpc.health.v1.Health/Check",
+		connect.WithGRPCWeb(),
+	)
+
+	reqClients := []*connect.Client[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse]{
+		healthClient,
+		grpcHealthClient,
+		grpcHealthWebClient,
+	}
 
 	for _, n := range services {
 		req := &grpc_health_v1.HealthCheckRequest{}
@@ -32,16 +49,19 @@ func healthCheck(client *http.Client, services ...string) {
 			req.Service = n
 		}
 
-		res, err := grpcHealthClient.CallUnary(
-			context.Background(),
-			connect.NewRequest(req),
-		)
-		if err != nil {
-			log.Fatal(err)
+		for _, c := range reqClients {
+			res, err := c.CallUnary(
+				context.Background(),
+				connect.NewRequest(req),
+			)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
+				log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
+			}
 		}
-		if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
-			log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
-		}
+
 	}
 }
 
