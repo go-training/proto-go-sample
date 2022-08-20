@@ -9,7 +9,6 @@ import (
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
 
 	"github.com/bufbuild/connect-go"
-	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -37,19 +36,5 @@ func pingServiceRoute(r *chi.Mux) {
 		compress1KB,
 	)
 
-	// grpcV1
-	grpcPath, gHandler := grpcreflect.NewHandlerV1(
-		grpcreflect.NewStaticReflector(pingv1connect.PingServiceName),
-		compress1KB,
-	)
-
-	// grpcV1Alpha
-	grpcAlphaPath, gAlphaHandler := grpcreflect.NewHandlerV1Alpha(
-		grpcreflect.NewStaticReflector(pingv1connect.PingServiceName),
-		compress1KB,
-	)
-
 	r.Post(connectPath+"{name}", grpcHandler(connecthandler))
-	r.Post(grpcPath+"{name}", grpcHandler(gHandler))
-	r.Post(grpcAlphaPath+"{name}", grpcHandler(gAlphaHandler))
 }

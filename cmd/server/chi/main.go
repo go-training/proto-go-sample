@@ -32,6 +32,7 @@ func main() {
 	giteaServiceRoute(r)
 	pingServiceRoute(r)
 	healthServiceRoute(r)
+	grpcServiceRoute(r)
 
 	srv := &http.Server{
 		Addr: ":8080",
