@@ -9,8 +9,6 @@ import (
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
 
 	"github.com/bufbuild/connect-go"
-	grpchealth "github.com/bufbuild/connect-grpchealth-go"
-	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,26 +36,5 @@ func giteaServiceRoute(r *gin.Engine) {
 		compress1KB,
 	)
 
-	// grpcV1
-	grpcPath, gHandler := grpcreflect.NewHandlerV1(
-		grpcreflect.NewStaticReflector(giteav1connect.GiteaServiceName),
-		compress1KB,
-	)
-
-	// grpcV1Alpha
-	grpcAlphaPath, gAlphaHandler := grpcreflect.NewHandlerV1Alpha(
-		grpcreflect.NewStaticReflector(giteav1connect.GiteaServiceName),
-		compress1KB,
-	)
-
-	// grpcHealthCheck
-	grpcHealthPath, gHealthHandler := grpchealth.NewHandler(
-		grpchealth.NewStaticChecker(giteav1connect.GiteaServiceName),
-		compress1KB,
-	)
-
 	r.POST(connectPath+":name", grpcHandler(connecthandler))
-	r.POST(grpcPath+"Gitea", grpcHandler(gHandler))
-	r.POST(grpcAlphaPath+"Gitea", grpcHandler(gAlphaHandler))
-	r.POST(grpcHealthPath+"Gitea", grpcHandler(gHealthHandler))
 }

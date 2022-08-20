@@ -9,8 +9,6 @@ import (
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
 
 	"github.com/bufbuild/connect-go"
-	grpchealth "github.com/bufbuild/connect-grpchealth-go"
-	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,26 +36,5 @@ func pingServiceRoute(r *gin.Engine) {
 		compress1KB,
 	)
 
-	// grpcV1
-	grpcPath, gHandler := grpcreflect.NewHandlerV1(
-		grpcreflect.NewStaticReflector(pingv1connect.PingServiceName),
-		compress1KB,
-	)
-
-	// grpcV1Alpha
-	grpcAlphaPath, gAlphaHandler := grpcreflect.NewHandlerV1Alpha(
-		grpcreflect.NewStaticReflector(pingv1connect.PingServiceName),
-		compress1KB,
-	)
-
-	// grpcHealthCheck
-	grpcHealthPath, gHealthHandler := grpchealth.NewHandler(
-		grpchealth.NewStaticChecker(pingv1connect.PingServiceName),
-		compress1KB,
-	)
-
 	r.POST(connectPath+":name", grpcHandler(connecthandler))
-	r.POST(grpcPath+"Ping", grpcHandler(gHandler))
-	r.POST(grpcAlphaPath+"Ping", grpcHandler(gAlphaHandler))
-	r.POST(grpcHealthPath+"Ping", grpcHandler(gHealthHandler))
 }
