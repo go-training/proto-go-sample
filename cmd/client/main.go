@@ -19,6 +19,32 @@ import (
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
 )
 
+func healthCheck(client *http.Client, services ...string) {
+	grpcHealthClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
+		client,
+		"http://localhost:8080/grpc.health.v1.Health/Check",
+		connect.WithGRPC(),
+	)
+
+	for _, n := range services {
+		req := &grpc_health_v1.HealthCheckRequest{}
+		if n != "" {
+			req.Service = n
+		}
+
+		res, err := grpcHealthClient.CallUnary(
+			context.Background(),
+			connect.NewRequest(req),
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
+			log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
+		}
+	}
+}
+
 func main() {
 	c := &http.Client{
 		Timeout: 5 * time.Second,
@@ -40,49 +66,6 @@ func main() {
 		"http://localhost:8080/",
 		connect.WithGRPC(),
 	)
-
-	grpcHealthClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
-		c,
-		"http://localhost:8080/grpc.health.v1.Health/Check",
-		connect.WithGRPC(),
-	)
-
-	res, err := grpcHealthClient.CallUnary(
-		context.Background(),
-		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{}),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
-		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
-	}
-
-	res, err = grpcHealthClient.CallUnary(
-		context.Background(),
-		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{
-			Service: pingv1connect.PingServiceName,
-		}),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
-		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
-	}
-
-	res, err = grpcHealthClient.CallUnary(
-		context.Background(),
-		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{
-			Service: giteav1connect.GiteaServiceName,
-		}),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
-		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
-	}
 
 	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient}
 
@@ -124,4 +107,11 @@ func main() {
 		log.Println("Message:", res.Msg.Data)
 		log.Println("Gitea-Version:", res.Header().Get("Gitea-Version"))
 	}
+
+	// health check
+	healthCheck(c,
+		"",
+		giteav1connect.GiteaServiceName,
+		pingv1connect.PingServiceName,
+	)
 }
