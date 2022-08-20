@@ -71,6 +71,19 @@ func main() {
 		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
 	}
 
+	res, err = grpcHealthClient.CallUnary(
+		context.Background(),
+		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{
+			Service: giteav1connect.GiteaServiceName,
+		}),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
+		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
+	}
+
 	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient}
 
 	for _, client := range giteaClients {
