@@ -67,7 +67,13 @@ func main() {
 		connect.WithGRPC(),
 	)
 
-	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient}
+	grpcWebGiteaClient := giteav1connect.NewGiteaServiceClient(
+		c,
+		"http://localhost:8080/",
+		connect.WithGRPCWeb(),
+	)
+
+	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient, grpcWebGiteaClient}
 
 	for _, client := range giteaClients {
 		req := connect.NewRequest(&giteav1.GiteaRequest{
@@ -93,7 +99,13 @@ func main() {
 		connect.WithGRPC(),
 	)
 
-	pingClients := []pingv1connect.PingServiceClient{connectPingClient, grpcPingClient}
+	grpcWebPingClient := pingv1connect.NewPingServiceClient(
+		c,
+		"http://localhost:8080/",
+		connect.WithGRPCWeb(),
+	)
+
+	pingClients := []pingv1connect.PingServiceClient{connectPingClient, grpcPingClient, grpcWebPingClient}
 
 	for _, client := range pingClients {
 		req := connect.NewRequest(&pingv1.PingRequest{
