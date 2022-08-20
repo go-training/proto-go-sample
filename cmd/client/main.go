@@ -142,7 +142,6 @@ func main() {
 
 	// health check
 	healthCheck(c,
-		"",
 		giteav1connect.GiteaServiceName,
 		pingv1connect.PingServiceName,
 	)
