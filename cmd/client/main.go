@@ -14,7 +14,9 @@ import (
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
 
 	"github.com/bufbuild/connect-go"
+	grpchealth "github.com/bufbuild/connect-grpchealth-go"
 	"golang.org/x/net/http2"
+	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func main() {
@@ -38,6 +40,36 @@ func main() {
 		"http://localhost:8080/",
 		connect.WithGRPC(),
 	)
+
+	grpcHealthClient := connect.NewClient[grpc_health_v1.HealthCheckRequest, grpc_health_v1.HealthCheckResponse](
+		c,
+		"http://localhost:8080/grpc.health.v1.Health/Check",
+		connect.WithGRPC(),
+	)
+
+	res, err := grpcHealthClient.CallUnary(
+		context.Background(),
+		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{}),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
+		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
+	}
+
+	res, err = grpcHealthClient.CallUnary(
+		context.Background(),
+		connect.NewRequest(&grpc_health_v1.HealthCheckRequest{
+			Service: pingv1connect.PingServiceName,
+		}),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if grpchealth.Status(res.Msg.Status) != grpchealth.StatusServing {
+		log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
+	}
 
 	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient}
 
