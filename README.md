@@ -66,15 +66,33 @@ run client with curl command
 ```sh
 curl --header "Content-Type: application/json" \
     --data '{"name": "foobar"}' \
-    http://localhost:8080/proto.v1.GiteaService/Gitea
+    http://localhost:8080/gitea.v1.GiteaService/Gitea
+```
+
+health check
+
+```sh
+curl --header "Content-Type: application/json" \
+    --data '{"service": "gitea.v1.GiteaService"}' \
+    http://localhost:8080/grpc.health.v1.Health/Check
 ```
 
 run client with [grpcurl](https://github.com/fullstorydev/grpcurl) command
 
 ```sh
 grpcurl \
-    -plaintext \
-    -d '{"name": "foobar"}' \
-    localhost:8080 \
-    proto.v1.GiteaService/Gitea
+  -plaintext \
+  -d '{"name": "foobar"}' \
+  localhost:8080 \
+  gitea.v1.GiteaService/Gitea
+```
+
+health check
+
+```sh
+grpcurl \
+  -plaintext \
+  -d '{"service": "gitea.v1.GiteaService"}' \
+  localhost:8080 \
+  grpc.health.v1.Health/Check
 ```

@@ -7,6 +7,7 @@ import (
 	"github.com/bufbuild/connect-go"
 	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func grpcServiceRoute(r *gin.Engine) {
@@ -17,6 +18,7 @@ func grpcServiceRoute(r *gin.Engine) {
 		grpcreflect.NewStaticReflector(
 			giteav1connect.GiteaServiceName,
 			pingv1connect.PingServiceName,
+			grpc_health_v1.Health_ServiceDesc.ServiceName,
 		),
 		compress1KB,
 	)
@@ -26,6 +28,7 @@ func grpcServiceRoute(r *gin.Engine) {
 		grpcreflect.NewStaticReflector(
 			giteav1connect.GiteaServiceName,
 			pingv1connect.PingServiceName,
+			grpc_health_v1.Health_ServiceDesc.ServiceName,
 		),
 		compress1KB,
 	)
