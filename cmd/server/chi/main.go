@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/go-training/proto-go-sample/cmd/server/chi/router"
+
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -18,7 +20,7 @@ func main() {
 	srv := &http.Server{
 		Addr: ":8080",
 		Handler: h2c.NewHandler(
-			newRouter(),
+			router.New(),
 			&http2.Server{},
 		),
 		ReadHeaderTimeout: time.Second,

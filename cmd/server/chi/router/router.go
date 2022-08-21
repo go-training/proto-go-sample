@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"log"
@@ -15,7 +15,7 @@ func grpcHandler(h http.Handler) http.HandlerFunc {
 	})
 }
 
-func newRouter() *chi.Mux {
+func New() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {

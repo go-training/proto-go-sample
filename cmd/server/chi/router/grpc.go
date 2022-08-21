@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
