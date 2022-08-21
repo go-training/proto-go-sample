@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type GRPCRouteFn func() (string, http.Handler)
+type gRPCRouteFn func() (string, http.Handler)
 
 func grpcHandler(h http.Handler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +19,7 @@ func grpcHandler(h http.Handler) http.HandlerFunc {
 	})
 }
 
-func GRPCRouter(r *chi.Mux, fn GRPCRouteFn) {
+func gRPCRouter(r *chi.Mux, fn gRPCRouteFn) {
 	p, h := fn()
 	r.Post(p+"{name}", grpcHandler(h))
 }
@@ -30,11 +30,11 @@ func New() *chi.Mux {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
-	GRPCRouter(r, grpc.V1Route)
-	GRPCRouter(r, grpc.V1AlphaRoute)
-	GRPCRouter(r, grpc.PingRoute)
-	GRPCRouter(r, grpc.GiteaRoute)
-	GRPCRouter(r, grpc.HealthRoute)
+	gRPCRouter(r, grpc.V1Route)
+	gRPCRouter(r, grpc.V1AlphaRoute)
+	gRPCRouter(r, grpc.HealthRoute)
+	gRPCRouter(r, grpc.PingRoute)
+	gRPCRouter(r, grpc.GiteaRoute)
 
 	return r
 }
