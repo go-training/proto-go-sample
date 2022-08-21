@@ -1,20 +1,21 @@
-package router
+package grpc
 
 import (
+	"net/http"
+
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
 
 	"github.com/bufbuild/connect-go"
 	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
-	"github.com/go-chi/chi/v5"
 	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
-func grpcServiceRoute(r *chi.Mux) {
-	compress1KB := connect.WithCompressMinBytes(1024)
+var compress1KB = connect.WithCompressMinBytes(1024)
 
+func V1Route() (string, http.Handler) {
 	// grpcV1
-	grpcPath, gHandler := grpcreflect.NewHandlerV1(
+	return grpcreflect.NewHandlerV1(
 		grpcreflect.NewStaticReflector(
 			giteav1connect.GiteaServiceName,
 			pingv1connect.PingServiceName,
@@ -22,9 +23,11 @@ func grpcServiceRoute(r *chi.Mux) {
 		),
 		compress1KB,
 	)
+}
 
+func V1AlphaRoute() (string, http.Handler) {
 	// grpcV1Alpha
-	grpcAlphaPath, gAlphaHandler := grpcreflect.NewHandlerV1Alpha(
+	return grpcreflect.NewHandlerV1Alpha(
 		grpcreflect.NewStaticReflector(
 			giteav1connect.GiteaServiceName,
 			pingv1connect.PingServiceName,
@@ -32,7 +35,4 @@ func grpcServiceRoute(r *chi.Mux) {
 		),
 		compress1KB,
 	)
-
-	r.Post(grpcPath+"{name}", grpcHandler(gHandler))
-	r.Post(grpcAlphaPath+"{name}", grpcHandler(gAlphaHandler))
 }
