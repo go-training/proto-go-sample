@@ -1,5 +1,7 @@
 # proto-go-sample
 
+[![build sample code](https://github.com/go-training/proto-go-sample/actions/workflows/build.yaml/badge.svg)](https://github.com/go-training/proto-go-sample/actions/workflows/build.yaml)
+
 Sample Code for proto connect.
 
 ## Build Server and Client
