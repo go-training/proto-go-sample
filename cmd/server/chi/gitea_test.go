@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -15,12 +14,7 @@ import (
 
 func TestGiteaServer(t *testing.T) {
 	t.Parallel()
-	giteaService := &GiteaServer{}
-	mux := http.NewServeMux()
-	mux.Handle(giteav1connect.NewGiteaServiceHandler(
-		giteaService,
-	))
-	server := httptest.NewUnstartedServer(mux)
+	server := httptest.NewUnstartedServer(newRouter())
 	server.EnableHTTP2 = true
 	server.StartTLS()
 	defer server.Close()
