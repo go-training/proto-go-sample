@@ -10,9 +10,9 @@ import (
 
 	giteav1 "github.com/go-training/proto-go-demo/gitea/v1"
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
-	"github.com/stretchr/testify/assert"
 
 	"github.com/bufbuild/connect-go"
+	"github.com/stretchr/testify/assert"
 )
 
 type Service struct{}

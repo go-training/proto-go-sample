@@ -10,9 +10,9 @@ import (
 
 	pingv1 "github.com/go-training/proto-go-demo/ping/v1"
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
-	"github.com/stretchr/testify/assert"
 
 	"github.com/bufbuild/connect-go"
+	"github.com/stretchr/testify/assert"
 )
 
 type Service struct{}
