@@ -7,7 +7,7 @@ import (
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
 )
 
-func TestGiteaService(t *testing.T) {
+func TestService(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.Handle(pingv1connect.NewPingServiceHandler(
 		&Service{},

@@ -7,7 +7,7 @@ import (
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
 )
 
-func TestGiteaService(t *testing.T) {
+func TestService(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.Handle(giteav1connect.NewGiteaServiceHandler(
 		&Service{},
