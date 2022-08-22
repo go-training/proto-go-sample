@@ -23,7 +23,7 @@ upgrade: ## Upgrade dependencies
 	$(GO) get -u -t ./... && go mod tidy -v
 
 test:
-	@$(GO) test -cover ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
+	@$(GO) test -coverprofile coverage.txt -cover ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 clean:
 	rm -rf gen bin
