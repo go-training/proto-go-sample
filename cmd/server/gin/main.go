@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-training/proto-go-sample/cmd/server/gin/router"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -23,17 +24,10 @@ func grpcHandler(h http.Handler) gin.HandlerFunc {
 }
 
 func main() {
-	r := gin.Default()
-
-	giteaServiceRoute(r)
-	pingServiceRoute(r)
-	healthServiceRoute(r)
-	grpcServiceRoute(r)
-
 	srv := &http.Server{
 		Addr: ":8080",
 		Handler: h2c.NewHandler(
-			r,
+			router.New(),
 			&http2.Server{},
 		),
 		ReadHeaderTimeout: time.Second,
