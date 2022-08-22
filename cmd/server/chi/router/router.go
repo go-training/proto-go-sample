@@ -10,8 +10,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type gRPCRouteFn func() (string, http.Handler)
-
 func grpcHandler(h http.Handler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println("protocol version:", r.Proto)
@@ -19,7 +17,7 @@ func grpcHandler(h http.Handler) http.HandlerFunc {
 	})
 }
 
-func gRPCRouter(r *chi.Mux, fn gRPCRouteFn) {
+func gRPCRouter(r *chi.Mux, fn grpc.RouteFn) {
 	p, h := fn()
 	r.Post(p+"{name}", grpcHandler(h))
 }
