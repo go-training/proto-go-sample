@@ -3,6 +3,7 @@ package router
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-training/proto-go-sample/pkg/grpc"
 
@@ -32,7 +33,7 @@ func New() *chi.Mux {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute)
+	gRPCRouter(r, grpc.GiteaRoute(3*time.Second))
 
 	return r
 }

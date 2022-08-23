@@ -8,13 +8,15 @@ import (
 	"github.com/go-training/proto-go-sample/pkg/gitea"
 )
 
-func GiteaRoute() (string, http.Handler) {
+func GiteaRoute(d time.Duration) RouteFn {
 	giteaService := &gitea.Service{
-		StreamDelay: 2 * time.Second,
+		StreamDelay: d,
 	}
 
-	return giteav1connect.NewGiteaServiceHandler(
-		giteaService,
-		compress1KB,
-	)
+	return func() (string, http.Handler) {
+		return giteav1connect.NewGiteaServiceHandler(
+			giteaService,
+			compress1KB,
+		)
+	}
 }
