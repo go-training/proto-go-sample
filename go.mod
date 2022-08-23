@@ -8,7 +8,7 @@ require (
 	github.com/bufbuild/connect-grpcreflect-go v0.1.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-chi/chi/v5 v5.0.7
-	github.com/go-training/proto-go-demo v0.0.0-20220817145557-e45e11a5d2bc
+	github.com/go-training/proto-go-demo v0.0.0-20220823023730-f7164eecf4ee
 	github.com/stretchr/testify v1.8.0
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234
 	google.golang.org/grpc v1.48.0

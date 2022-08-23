@@ -42,8 +42,8 @@ github.com/go-playground/universal-translator v0.18.0 h1:82dyy6p4OuJq4/CByFNOn/j
 github.com/go-playground/universal-translator v0.18.0/go.mod h1:UvRDBj+xPUEGrFYl+lu/H90nyDXpg0fqeB/AQUGNTVA=
 github.com/go-playground/validator/v10 v10.11.0 h1:0W+xRM511GY47Yy3bZUbJVitCNg2BOGlCyvTqsp/xIw=
 github.com/go-playground/validator/v10 v10.11.0/go.mod h1:i+3WkQ1FvaUjjxh1kSvIA4dMGDBiPU55YFDl0WbKdWU=
-github.com/go-training/proto-go-demo v0.0.0-20220817145557-e45e11a5d2bc h1:ZxaO82qTa0Rhobry+l7n0HNwLQAZbHZhvjMned9px5Q=
-github.com/go-training/proto-go-demo v0.0.0-20220817145557-e45e11a5d2bc/go.mod h1:jmZ2CVdQ7RMPEQaZE+ZMJ8iLEdcCOQVkMZNXQnF2dSA=
+github.com/go-training/proto-go-demo v0.0.0-20220823023730-f7164eecf4ee h1:zkL32P5BBPdCXVH06q4RliA6A/f6JD0nYn0qVvgcWoY=
+github.com/go-training/proto-go-demo v0.0.0-20220823023730-f7164eecf4ee/go.mod h1:jmZ2CVdQ7RMPEQaZE+ZMJ8iLEdcCOQVkMZNXQnF2dSA=
 github.com/goccy/go-json v0.9.11 h1:/pAaQDLHEoCq/5FFmSKBswWmK6H0e8g4159Kc/X/nqk=
 github.com/goccy/go-json v0.9.11/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=

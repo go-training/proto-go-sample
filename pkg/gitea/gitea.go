@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	giteav1 "github.com/go-training/proto-go-demo/gitea/v1"
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
@@ -15,7 +16,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type Service struct{}
+type Service struct {
+	StreamDelay time.Duration
+}
 
 func (s *Service) Gitea(
 	ctx context.Context,
@@ -28,6 +31,38 @@ func (s *Service) Gitea(
 	})
 	res.Header().Set("Gitea-Version", "v1")
 	return res, nil
+}
+
+func (s *Service) Introduce(
+	ctx context.Context,
+	req *connect.Request[giteav1.IntroduceRequest],
+	stream *connect.ServerStream[giteav1.IntroduceResponse],
+) error {
+	log.Println("Content-Type: ", req.Header().Get("Content-Type"))
+	log.Println("User-Agent: ", req.Header().Get("User-Agent"))
+	name := req.Msg.Name
+	if name == "" {
+		name = "Anonymous User"
+	}
+	intros := []string{name + ", How are you feeling today 01 ?", name + ", How are you feeling today 02 ?"}
+	var ticker *time.Ticker
+	if s.StreamDelay > 0 {
+		ticker = time.NewTicker(s.StreamDelay)
+		defer ticker.Stop()
+	}
+	for _, resp := range intros {
+		if ticker != nil {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-ticker.C:
+			}
+		}
+		if err := stream.Send(&giteav1.IntroduceResponse{Sentence: resp}); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func MainServiceTest(t *testing.T, h http.Handler) {
