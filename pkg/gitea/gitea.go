@@ -99,4 +99,21 @@ func MainServiceTest(t *testing.T, h http.Handler) {
 			assert.Equal(t, "Hello, foobar!", result.Msg.Giteaing)
 		}
 	})
+
+	t.Run("introduce", func(t *testing.T) { // nolint: paralleltest
+		total := 0
+		for _, client := range clients {
+			request := connect.NewRequest(&giteav1.IntroduceRequest{
+				Name: "foobar",
+			})
+			stream, err := client.Introduce(context.Background(), request)
+			assert.Nil(t, err)
+			for stream.Receive() {
+				total++
+			}
+			assert.Nil(t, stream.Err())
+			assert.Nil(t, stream.Close())
+			assert.True(t, total > 0)
+		}
+	})
 }

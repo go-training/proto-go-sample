@@ -33,7 +33,7 @@ func New() *chi.Mux {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute(3*time.Second))
+	gRPCRouter(r, grpc.GiteaRoute(200*time.Millisecond))
 
 	return r
 }
