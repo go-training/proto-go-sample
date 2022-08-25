@@ -79,6 +79,10 @@ curl --header "Content-Type: application/json" \
     http://localhost:8080/grpc.health.v1.Health/Check
 ```
 
+## Testing
+
+### Use grpcurl
+
 run client with [grpcurl](https://github.com/fullstorydev/grpcurl) command
 
 ```sh
@@ -98,3 +102,15 @@ grpcurl \
   localhost:8080 \
   grpc.health.v1.Health/Check
 ```
+
+### Use grpcui
+
+```sh
+grpcui -plaintext localhost:8080
+```
+
+![page](./images/grpcui01.png)
+
+### Use Postman
+
+![page](./images/postman01.png)
