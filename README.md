@@ -105,6 +105,8 @@ grpcurl \
 
 ### Use grpcui
 
+See the [details page for grpcui](https://github.com/fullstorydev/grpcui)
+
 ```sh
 grpcui -plaintext localhost:8080
 ```
