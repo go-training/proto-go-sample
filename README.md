@@ -1,6 +1,6 @@
 # proto-go-sample
 
-[![build sample code](https://github.com/go-training/proto-go-sample/actions/workflows/build.yaml/badge.svg)](https://github.com/go-training/proto-go-sample/actions/workflows/build.yaml)
+[![build sample code](https://github.com/go-training/proto-go-sample/actions/workflows/go.yml/badge.svg)](https://github.com/go-training/proto-go-sample/actions/workflows/go.yml)
 
 Sample Code for proto connect.
 
