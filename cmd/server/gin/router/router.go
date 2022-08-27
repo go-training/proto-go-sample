@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-training/proto-go-sample/pkg/grpc"
+	openapiv2 "github.com/go-training/proto-openapiv2-demo"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,8 @@ func gRPCRouter(r *gin.Engine, fn grpc.RouteFn) {
 
 func New() *gin.Engine {
 	r := gin.Default()
+	r.StaticFS("/public", http.FS(openapiv2.F))
+
 	gRPCRouter(r, grpc.V1Route)
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)

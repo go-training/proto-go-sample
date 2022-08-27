@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-training/proto-go-demo v0.0.0-20220823023730-f7164eecf4ee
+	github.com/go-training/proto-openapiv2-demo v0.0.0-20220827095415-e2b3159bc486
 	github.com/stretchr/testify v1.8.0
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b
 	google.golang.org/grpc v1.49.0
