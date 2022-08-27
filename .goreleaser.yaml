@@ -6,6 +6,11 @@ builds:
     # Defaults to the binary name.
     id: "chi-server"
 
+    # Binary name.
+    # Can be a path (e.g. `bin/app`) to wrap the binary in a directory.
+    # Default is the name of the project directory.
+    binary: chi-server
+
     # Path to main.go file or main package.
     # Notice: when used with `gomod.proxy`, this must be a package.
     #
@@ -37,6 +42,11 @@ builds:
     # Defaults to the binary name.
     id: "gin-server"
 
+    # Binary name.
+    # Can be a path (e.g. `bin/app`) to wrap the binary in a directory.
+    # Default is the name of the project directory.
+    binary: gin-server
+
     # Path to main.go file or main package.
     # Notice: when used with `gomod.proxy`, this must be a package.
     #
@@ -67,6 +77,11 @@ builds:
     # ID of the build.
     # Defaults to the binary name.
     id: "proto-client"
+
+    # Binary name.
+    # Can be a path (e.g. `bin/app`) to wrap the binary in a directory.
+    # Default is the name of the project directory.
+    binary: proto-client
 
     # Path to main.go file or main package.
     # Notice: when used with `gomod.proxy`, this must be a package.
