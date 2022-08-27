@@ -18,6 +18,8 @@ import (
 
 type Service struct {
 	StreamDelay time.Duration
+
+	giteav1connect.UnimplementedGiteaServiceHandler
 }
 
 func (s *Service) Gitea(

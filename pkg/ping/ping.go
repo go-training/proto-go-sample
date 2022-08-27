@@ -15,7 +15,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type Service struct{}
+type Service struct {
+	pingv1connect.UnimplementedPingServiceHandler
+}
 
 func (s *Service) Ping(
 	ctx context.Context,
