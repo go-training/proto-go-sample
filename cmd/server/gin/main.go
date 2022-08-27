@@ -6,14 +6,12 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
 	"strconv"
-	"syscall"
 	"time"
 
 	"github.com/go-training/proto-go-sample/cmd/server/gin/router"
 
+	"github.com/appleboy/graceful"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -29,6 +27,8 @@ func main() {
 	flag.StringVar(&certPath, "c", "", "cert path")
 	flag.StringVar(&keyPath, "k", "", "key portpath")
 	flag.Parse()
+
+	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
 		router.New(),
@@ -47,21 +47,25 @@ func main() {
 		MaxHeaderBytes:    8 * 1024, // 8KiB
 	}
 
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
-	go func() {
+	m.AddRunningJob(func(ctx context.Context) error {
+		log.Println("server listen on port: " + strconv.Itoa(listen))
 		if err := listenAndServe(srv, certPath, keyPath); !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("HTTP listen and serve: %v", err)
 		}
-	}()
-	log.Println("server listen on port: " + strconv.Itoa(listen))
+		return nil
+	})
 
-	<-signals
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("HTTP shutdown: %v", err) //nolint:gocritic
-	}
+	m.AddShutdownJob(func() error {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		if err := srv.Shutdown(ctx); err != nil {
+			log.Fatalf("HTTP shutdown: %v", err)
+		}
+
+		return nil
+	})
+
+	<-m.Done()
 }
 
 func listenAndServe(s *http.Server, certPath string, keyPath string) error {

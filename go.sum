@@ -1,3 +1,5 @@
+github.com/appleboy/graceful v0.0.4 h1:Q4LCeq4DFy59qiACLtuH+mSqDERtUzwkQbCWpRaWwvQ=
+github.com/appleboy/graceful v0.0.4/go.mod h1:Q2mVx0t+N0lCDZc5MJudbcpTm6cgGM/J2gZCZIqD9dc=
 github.com/bufbuild/connect-go v0.4.0 h1:fIMyUYG8mXSTH+nnlOx9KmRUf3mBF0R2uKK+BQBoOHE=
 github.com/bufbuild/connect-go v0.4.0/go.mod h1:ZEtBnQ7J/m7bvWOW+H8T/+hKQCzPVfhhhICuvtcnjlI=
 github.com/bufbuild/connect-grpchealth-go v0.1.0 h1:r3HMBCXkqocR7z1ET98kteRE5K4B84lP9XMCRQXIGmw=

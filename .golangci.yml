@@ -27,9 +27,7 @@ linters:
     - nakedret
     - noctx
     - nolintlint
-    - rowserrcheck
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert

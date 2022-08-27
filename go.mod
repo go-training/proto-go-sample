@@ -3,6 +3,7 @@ module github.com/go-training/proto-go-sample
 go 1.19
 
 require (
+	github.com/appleboy/graceful v0.0.4
 	github.com/bufbuild/connect-go v0.4.0
 	github.com/bufbuild/connect-grpchealth-go v0.1.0
 	github.com/bufbuild/connect-grpcreflect-go v0.1.0
