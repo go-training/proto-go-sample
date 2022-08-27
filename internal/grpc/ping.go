@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-training/proto-go-demo/ping/v1/pingv1connect"
-	"github.com/go-training/proto-go-sample/pkg/ping"
+	"github.com/go-training/proto-go-sample/internal/ping"
 )
 
 func PingRoute() (string, http.Handler) {

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/go-training/proto-go-demo/gitea/v1/giteav1connect"
-	"github.com/go-training/proto-go-sample/pkg/gitea"
+	"github.com/go-training/proto-go-sample/internal/gitea"
 )
 
 func GiteaRoute(d time.Duration) RouteFn {

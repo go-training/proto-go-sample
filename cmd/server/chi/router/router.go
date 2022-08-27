@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-training/proto-go-sample/pkg/grpc"
+	"github.com/go-training/proto-go-sample/internal/grpc"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"

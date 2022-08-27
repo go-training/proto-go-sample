@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-training/proto-go-sample/pkg/grpc"
+	"github.com/go-training/proto-go-sample/internal/grpc"
 	openapiv2 "github.com/go-training/proto-openapiv2-demo"
 
 	"github.com/gin-gonic/gin"
