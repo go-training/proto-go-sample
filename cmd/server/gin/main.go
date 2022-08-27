@@ -60,7 +60,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("HTTP shutdown: %v", err) // nolint:gocritic
+		log.Fatalf("HTTP shutdown: %v", err) //nolint:gocritic
 	}
 }
 

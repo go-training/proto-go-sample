@@ -90,7 +90,7 @@ func MainServiceTest(t *testing.T, h http.Handler) {
 	)
 
 	clients := []giteav1connect.GiteaServiceClient{connectClient, grpcClient, grpcWebClient}
-	t.Run("gitea", func(t *testing.T) { // nolint: paralleltest
+	t.Run("gitea", func(t *testing.T) { //nolint: paralleltest
 		for _, client := range clients {
 			result, err := client.Gitea(context.Background(), connect.NewRequest(&giteav1.GiteaRequest{
 				Name: "foobar",
@@ -100,7 +100,7 @@ func MainServiceTest(t *testing.T, h http.Handler) {
 		}
 	})
 
-	t.Run("introduce", func(t *testing.T) { // nolint: paralleltest
+	t.Run("introduce", func(t *testing.T) { //nolint: paralleltest
 		total := 0
 		for _, client := range clients {
 			request := connect.NewRequest(&giteav1.IntroduceRequest{

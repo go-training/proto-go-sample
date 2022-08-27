@@ -27,7 +27,7 @@ func New() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
+		_, _ = w.Write([]byte("welcome"))
 	})
 	gRPCRouter(r, grpc.V1Route)
 	gRPCRouter(r, grpc.V1AlphaRoute)

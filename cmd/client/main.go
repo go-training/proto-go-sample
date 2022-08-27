@@ -61,7 +61,6 @@ func healthCheck(client *http.Client, services ...string) {
 				log.Fatalf("got status %v, expected %v", res.Msg.Status, grpchealth.StatusServing)
 			}
 		}
-
 	}
 }
 

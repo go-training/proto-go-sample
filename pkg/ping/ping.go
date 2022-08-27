@@ -55,7 +55,7 @@ func MainServiceTest(t *testing.T, h http.Handler) {
 	)
 
 	clients := []pingv1connect.PingServiceClient{connectClient, grpcClient, grpcWebClient}
-	t.Run("gitea", func(t *testing.T) { // nolint: paralleltest
+	t.Run("gitea", func(t *testing.T) { //nolint: paralleltest
 		for _, client := range clients {
 			result, err := client.Ping(context.Background(), connect.NewRequest(&pingv1.PingRequest{
 				Data: "foobar",
