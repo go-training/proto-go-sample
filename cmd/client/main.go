@@ -99,9 +99,12 @@ func main() {
 			Name: "foobar",
 		})
 		req.Header().Set("Gitea-Header", "hello from connect")
-		res, err := client.Gitea(context.Background(), req)
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+		defer cancel()
+		res, err := client.Gitea(ctx, req)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
+			continue
 		}
 		log.Println("Message:", res.Msg.Giteaing)
 		log.Println("Gitea-Version:", res.Header().Get("Gitea-Version"))
@@ -133,7 +136,8 @@ func main() {
 		req.Header().Set("Gitea-Header", "hello from connect")
 		res, err := client.Ping(context.Background(), req)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
+			continue
 		}
 		log.Println("Message:", res.Msg.Data)
 		log.Println("Gitea-Version:", res.Header().Get("Gitea-Version"))

@@ -32,6 +32,7 @@ func (s *Service) Gitea(
 		Giteaing: fmt.Sprintf("Hello, %s!", req.Msg.Name),
 	})
 	res.Header().Set("Gitea-Version", "v1")
+	time.Sleep(2 * time.Second)
 	return res, nil
 }
 
