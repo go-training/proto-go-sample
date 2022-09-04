@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"log"
 	"net"
 	"net/http"
@@ -102,7 +103,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()
 		res, err := client.Gitea(ctx, req)
-		if err != nil {
+		if err != nil && errors.Is(err, context.DeadlineExceeded) {
 			log.Println(err)
 			continue
 		}
