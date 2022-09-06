@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -105,6 +106,11 @@ func main() {
 		res, err := client.Gitea(ctx, req)
 		if err != nil && errors.Is(err, context.DeadlineExceeded) {
 			log.Println(err)
+			fmt.Println(connect.CodeOf(err))
+			if connectErr := new(connect.Error); errors.As(err, &connectErr) {
+				fmt.Println(connectErr.Message())
+				fmt.Println(connectErr.Details())
+			}
 			continue
 		}
 		log.Println("Message:", res.Msg.Giteaing)
