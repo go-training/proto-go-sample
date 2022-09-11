@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"github.com/go-training/proto-go-sample/internal/grpc"
-	openapiv2 "github.com/go-training/proto-openapiv2-demo"
 
 	"github.com/gin-gonic/gin"
+	openapiv2 "github.com/go-training/proto-openapiv2-demo"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func grpcHandler(h http.Handler) gin.HandlerFunc {
@@ -23,8 +24,9 @@ func gRPCRouter(r *gin.Engine, fn grpc.RouteFn) {
 	r.POST(p+":name", grpcHandler(h))
 }
 
-func New() *gin.Engine {
+func New(serviceName string) *gin.Engine {
 	r := gin.Default()
+	r.Use(otelgin.Middleware(serviceName))
 	r.StaticFS("/public", http.FS(openapiv2.F))
 
 	gRPCRouter(r, grpc.V1Route)

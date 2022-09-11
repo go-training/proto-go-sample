@@ -28,11 +28,17 @@ func (s *Service) Gitea(
 ) (*connect.Response[giteav1.GiteaResponse], error) {
 	log.Println("Content-Type: ", req.Header().Get("Content-Type"))
 	log.Println("User-Agent: ", req.Header().Get("User-Agent"))
+	log.Println("Te: ", req.Header().Get("Te"))
+	log.Println("Grpc-Encoding", req.Header().Get("Grpc-Encoding"))
+	log.Println("Grpc-Accept-Encoding", req.Header().Get("Grpc-Accept-Encoding"))
+	log.Println("Grpc-Timeout", req.Header().Get("Grpc-Timeout"))
+	log.Println("Grpc-Status", req.Header().Get("Grpc-Status"))
+	log.Println("Grpc-Message", req.Header().Get("Grpc-Message"))
+	log.Println("Grpc-Status-Details-Bin", req.Header().Get("Grpc-Status-Details-Bin"))
 	res := connect.NewResponse(&giteav1.GiteaResponse{
 		Giteaing: fmt.Sprintf("Hello, %s!", req.Msg.Name),
 	})
 	res.Header().Set("Gitea-Version", "v1")
-	time.Sleep(2 * time.Second)
 	return res, nil
 }
 

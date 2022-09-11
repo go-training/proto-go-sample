@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-training/proto-go-sample/cmd/server/gin/router"
+	"github.com/go-training/proto-go-sample/internal/otel"
 
 	"github.com/appleboy/graceful"
 	"golang.org/x/net/http2"
@@ -17,25 +18,41 @@ import (
 )
 
 var (
-	listen   int
-	certPath string
-	keyPath  string
+	listen       int
+	certPath     string
+	keyPath      string
+	serviceName  string
+	insecure     bool
+	collectorURL string
 )
 
 func main() {
 	flag.IntVar(&listen, "l", 8080, "listen port")
 	flag.StringVar(&certPath, "c", "", "cert path")
 	flag.StringVar(&keyPath, "k", "", "key portpath")
+	flag.StringVar(&serviceName, "n", "proto-go", "service name")
+	flag.BoolVar(&insecure, "insecure", true, "insecure")
+	flag.StringVar(&collectorURL, "url", "localhost:4317", "collector URL")
 	flag.Parse()
+
+	t, err := otel.New(serviceName, collectorURL, insecure)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := t.TP.Shutdown(context.Background()); err != nil {
+			log.Fatalf("Error shutting down tracer provider: %v", err)
+		}
+	}()
 
 	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
-		router.New(),
+		router.New(serviceName),
 		&http2.Server{},
 	)
 	if certPath != "" && keyPath != "" {
-		h = router.New()
+		h = router.New(serviceName)
 	}
 
 	srv := &http.Server{

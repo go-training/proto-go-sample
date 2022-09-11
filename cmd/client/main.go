@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"errors"
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -94,27 +92,25 @@ func main() {
 		connect.WithGRPCWeb(),
 	)
 
-	giteaClients := []giteav1connect.GiteaServiceClient{connectGiteaClient, grpcGiteaClient, grpcWebGiteaClient}
+	giteaClients := []giteav1connect.GiteaServiceClient{
+		connectGiteaClient,
+		grpcGiteaClient,
+		grpcWebGiteaClient,
+	}
 
 	for _, client := range giteaClients {
 		req := connect.NewRequest(&giteav1.GiteaRequest{
 			Name: "foobar",
 		})
 		req.Header().Set("Gitea-Header", "hello from connect")
-		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-		defer cancel()
-		res, err := client.Gitea(ctx, req)
-		if err != nil && errors.Is(err, context.DeadlineExceeded) {
+		res, err := client.Gitea(context.Background(), req)
+		if err != nil {
 			log.Println(err)
-			fmt.Println(connect.CodeOf(err))
-			if connectErr := new(connect.Error); errors.As(err, &connectErr) {
-				fmt.Println(connectErr.Message())
-				fmt.Println(connectErr.Details())
-			}
 			continue
 		}
 		log.Println("Message:", res.Msg.Giteaing)
 		log.Println("Gitea-Version:", res.Header().Get("Gitea-Version"))
+		time.Sleep(1 * time.Second)
 	}
 
 	connectPingClient := pingv1connect.NewPingServiceClient(
@@ -134,7 +130,11 @@ func main() {
 		connect.WithGRPCWeb(),
 	)
 
-	pingClients := []pingv1connect.PingServiceClient{connectPingClient, grpcPingClient, grpcWebPingClient}
+	pingClients := []pingv1connect.PingServiceClient{
+		connectPingClient,
+		grpcPingClient,
+		grpcWebPingClient,
+	}
 
 	for _, client := range pingClients {
 		req := connect.NewRequest(&pingv1.PingRequest{
