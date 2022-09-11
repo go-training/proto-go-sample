@@ -32,7 +32,7 @@ func main() {
 	flag.StringVar(&keyPath, "k", "", "key portpath")
 	flag.StringVar(&serviceName, "n", "proto-go", "service name")
 	flag.BoolVar(&insecure, "insecure", true, "insecure")
-	flag.StringVar(&collectorURL, "url", "localhost:4317", "collector URL")
+	flag.StringVar(&collectorURL, "url", "", "collector URL")
 	flag.Parse()
 
 	t, err := otel.New(serviceName, collectorURL, insecure)

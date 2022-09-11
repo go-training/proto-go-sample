@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/riandyrn/otelchi"
 )
 
 func grpcHandler(h http.Handler) http.HandlerFunc {
@@ -23,9 +24,10 @@ func gRPCRouter(r *chi.Mux, fn grpc.RouteFn) {
 	r.Post(p+"{name}", grpcHandler(h))
 }
 
-func New() *chi.Mux {
+func New(serviceName string) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(otelchi.Middleware(serviceName, otelchi.WithChiRoutes(r)))
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("welcome"))
 	})

@@ -2,11 +2,13 @@ package otel
 
 import (
 	"context"
+	"io"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	stdout "go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -24,24 +26,38 @@ func New(
 	collectorURL string,
 	insecure bool,
 ) (*Service, error) {
-	headers := map[string]string{}
+	var exporter sdktrace.SpanExporter
+	var err error
 
-	secureOption := otlptracegrpc.WithTLSCredentials(credentials.NewClientTLSFromCert(nil, ""))
-	if insecure {
-		secureOption = otlptracegrpc.WithInsecure()
+	if collectorURL != "" {
+		headers := map[string]string{}
+
+		secureOption := otlptracegrpc.WithTLSCredentials(credentials.NewClientTLSFromCert(nil, ""))
+		if insecure {
+			secureOption = otlptracegrpc.WithInsecure()
+		}
+
+		exporter, err = otlptrace.New(
+			context.Background(),
+			otlptracegrpc.NewClient(
+				secureOption,
+				otlptracegrpc.WithEndpoint(collectorURL),
+				otlptracegrpc.WithHeaders(headers),
+			),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		exporter, err = stdout.New(
+			stdout.WithWriter(io.Discard),
+			stdout.WithPrettyPrint(),
+		)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	exporter, err := otlptrace.New(
-		context.Background(),
-		otlptracegrpc.NewClient(
-			secureOption,
-			otlptracegrpc.WithEndpoint(collectorURL),
-			otlptracegrpc.WithHeaders(headers),
-		),
-	)
-	if err != nil {
-		return nil, err
-	}
 	resources, err := resource.New(
 		context.Background(),
 		resource.WithAttributes(

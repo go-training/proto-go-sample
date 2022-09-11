@@ -8,9 +8,9 @@ import (
 )
 
 func TestGiteaService(t *testing.T) {
-	gitea.MainServiceTest(t, New())
+	gitea.MainServiceTest(t, New("testing"))
 }
 
 func TestPingService(t *testing.T) {
-	ping.MainServiceTest(t, New())
+	ping.MainServiceTest(t, New("testing"))
 }
