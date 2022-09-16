@@ -14,10 +14,12 @@ import (
 
 	"github.com/bufbuild/connect-go"
 	"github.com/stretchr/testify/assert"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type Service struct {
 	StreamDelay time.Duration
+	Tracer      trace.Tracer
 
 	giteav1connect.UnimplementedGiteaServiceHandler
 }
@@ -26,6 +28,8 @@ func (s *Service) Gitea(
 	ctx context.Context,
 	req *connect.Request[giteav1.GiteaRequest],
 ) (*connect.Response[giteav1.GiteaResponse], error) {
+	_, span := s.Tracer.Start(ctx, "gitea route")
+	defer span.End()
 	log.Println("Content-Type: ", req.Header().Get("Content-Type"))
 	log.Println("User-Agent: ", req.Header().Get("User-Agent"))
 	log.Println("Te: ", req.Header().Get("Te"))

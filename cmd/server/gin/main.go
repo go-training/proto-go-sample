@@ -48,11 +48,11 @@ func main() {
 	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
-		router.New(serviceName),
+		router.New(t.Tracer, serviceName),
 		&http2.Server{},
 	)
 	if certPath != "" && keyPath != "" {
-		h = router.New(serviceName)
+		h = router.New(t.Tracer, serviceName)
 	}
 
 	srv := &http.Server{
