@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/riandyrn/otelchi"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func grpcHandler(h http.Handler) http.HandlerFunc {
@@ -24,7 +25,7 @@ func gRPCRouter(r *chi.Mux, fn grpc.RouteFn) {
 	r.Post(p+"{name}", grpcHandler(h))
 }
 
-func New(serviceName string) *chi.Mux {
+func New(t trace.Tracer, serviceName string) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(otelchi.Middleware(serviceName, otelchi.WithChiRoutes(r)))
@@ -35,7 +36,7 @@ func New(serviceName string) *chi.Mux {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute(200*time.Millisecond))
+	gRPCRouter(r, grpc.GiteaRoute(t, 200*time.Millisecond))
 
 	return r
 }
