@@ -19,7 +19,7 @@ func TestGiteaService(t *testing.T) {
 			t.Fatalf("Error shutting down tracer provider: %v", err)
 		}
 	}()
-	gitea.MainServiceTest(t, New(s.Tracer, "testing"))
+	gitea.MainServiceTest(t, New(s.Tracer, "testing", ""))
 }
 
 func TestPingService(t *testing.T) {
@@ -32,5 +32,5 @@ func TestPingService(t *testing.T) {
 			t.Fatalf("Error shutting down tracer provider: %v", err)
 		}
 	}()
-	ping.MainServiceTest(t, New(s.Tracer, "testing"))
+	ping.MainServiceTest(t, New(s.Tracer, "testing", ""))
 }

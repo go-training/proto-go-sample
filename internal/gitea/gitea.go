@@ -24,6 +24,7 @@ import (
 type Service struct {
 	StreamDelay time.Duration
 	Tracer      trace.Tracer
+	TargetURL   string
 
 	giteav1connect.UnimplementedGiteaServiceHandler
 }
@@ -63,12 +64,12 @@ func (s *Service) Gitea(
 
 	grpcGiteaClient := giteav1connect.NewGiteaServiceClient(
 		c,
-		"http://localhost:8080/",
+		"http://"+s.TargetURL,
 		connect.WithGRPC(),
 	)
 
 	newReq := connect.NewRequest(&giteav1.IntroduceRequest{
-		Name: "foobar",
+		Name: req.Msg.Name,
 	})
 	_, err := grpcGiteaClient.Introduce(ctx, newReq)
 	if err != nil {
@@ -83,6 +84,11 @@ func (s *Service) Introduce(
 	req *connect.Request[giteav1.IntroduceRequest],
 	stream *connect.ServerStream[giteav1.IntroduceResponse],
 ) error {
+	var span trace.Span
+	if s.Tracer != nil {
+		ctx, span = s.Tracer.Start(ctx, "gitea introduce")
+		defer span.End()
+	}
 	log.Println("Content-Type: ", req.Header().Get("Content-Type"))
 	log.Println("User-Agent: ", req.Header().Get("User-Agent"))
 	name := req.Msg.Name

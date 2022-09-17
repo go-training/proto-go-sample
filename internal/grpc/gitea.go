@@ -10,10 +10,11 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func GiteaRoute(t trace.Tracer, d time.Duration) RouteFn {
+func GiteaRoute(t trace.Tracer, url string, d time.Duration) RouteFn {
 	giteaService := &gitea.Service{
 		StreamDelay: d,
 		Tracer:      t,
+		TargetURL:   url,
 	}
 
 	return func() (string, http.Handler) {

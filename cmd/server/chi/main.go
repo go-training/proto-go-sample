@@ -24,6 +24,7 @@ var (
 	serviceName  string
 	insecure     bool
 	collectorURL string
+	targetURL    string
 )
 
 func main() {
@@ -33,6 +34,7 @@ func main() {
 	flag.StringVar(&serviceName, "n", "proto-go", "service name")
 	flag.BoolVar(&insecure, "insecure", true, "insecure")
 	flag.StringVar(&collectorURL, "url", "", "collector URL")
+	flag.StringVar(&targetURL, "target", "localhost:8081", "target URL")
 	flag.Parse()
 
 	t, err := otel.New(serviceName, collectorURL, insecure)
@@ -48,11 +50,11 @@ func main() {
 	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
-		router.New(t.Tracer, serviceName),
+		router.New(t.Tracer, serviceName, targetURL),
 		&http2.Server{},
 	)
 	if certPath != "" && keyPath != "" {
-		h = router.New(t.Tracer, serviceName)
+		h = router.New(t.Tracer, serviceName, targetURL)
 	}
 
 	srv := &http.Server{

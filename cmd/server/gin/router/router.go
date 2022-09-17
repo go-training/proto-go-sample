@@ -28,7 +28,7 @@ func gRPCRouter(r *gin.Engine, fn grpc.RouteFn) {
 	r.POST(p+":name", grpcHandler(h))
 }
 
-func New(t trace.Tracer, serviceName string) *gin.Engine {
+func New(t trace.Tracer, serviceName, targetURL string) *gin.Engine {
 	r := gin.New()
 	r.Use(otelgin.Middleware(serviceName))
 	r.Use(requestid.New())
@@ -45,7 +45,7 @@ func New(t trace.Tracer, serviceName string) *gin.Engine {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute(t, 200*time.Millisecond))
+	gRPCRouter(r, grpc.GiteaRoute(t, targetURL, 200*time.Millisecond))
 
 	return r
 }

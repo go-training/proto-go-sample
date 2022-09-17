@@ -25,7 +25,7 @@ func gRPCRouter(r *chi.Mux, fn grpc.RouteFn) {
 	r.Post(p+"{name}", grpcHandler(h))
 }
 
-func New(t trace.Tracer, serviceName string) *chi.Mux {
+func New(t trace.Tracer, serviceName, targetURL string) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(otelchi.Middleware(serviceName, otelchi.WithChiRoutes(r)))
@@ -36,7 +36,7 @@ func New(t trace.Tracer, serviceName string) *chi.Mux {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute(t, 200*time.Millisecond))
+	gRPCRouter(r, grpc.GiteaRoute(t, targetURL, 200*time.Millisecond))
 
 	return r
 }
