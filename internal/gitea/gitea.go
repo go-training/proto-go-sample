@@ -2,8 +2,10 @@ package gitea
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,7 +16,9 @@ import (
 
 	"github.com/bufbuild/connect-go"
 	"github.com/stretchr/testify/assert"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/trace"
+	"golang.org/x/net/http2"
 )
 
 type Service struct {
@@ -28,8 +32,9 @@ func (s *Service) Gitea(
 	ctx context.Context,
 	req *connect.Request[giteav1.GiteaRequest],
 ) (*connect.Response[giteav1.GiteaResponse], error) {
+	var span trace.Span
 	if s.Tracer != nil {
-		_, span := s.Tracer.Start(ctx, "gitea route")
+		ctx, span = s.Tracer.Start(ctx, "gitea route")
 		defer span.End()
 	}
 	log.Println("Content-Type: ", req.Header().Get("Content-Type"))
@@ -44,7 +49,32 @@ func (s *Service) Gitea(
 	res := connect.NewResponse(&giteav1.GiteaResponse{
 		Giteaing: fmt.Sprintf("Hello, %s!", req.Msg.Name),
 	})
-	res.Header().Set("Gitea-Version", "v1")
+
+	// call to introduce instance
+	c := &http.Client{
+		Timeout: 5 * time.Second,
+		Transport: otelhttp.NewTransport(&http2.Transport{
+			AllowHTTP: true,
+			DialTLS: func(netw, addr string, cfg *tls.Config) (net.Conn, error) {
+				return net.Dial(netw, addr)
+			},
+		}),
+	}
+
+	grpcGiteaClient := giteav1connect.NewGiteaServiceClient(
+		c,
+		"http://localhost:8080/",
+		connect.WithGRPC(),
+	)
+
+	newReq := connect.NewRequest(&giteav1.IntroduceRequest{
+		Name: "foobar",
+	})
+	_, err := grpcGiteaClient.Introduce(ctx, newReq)
+	if err != nil {
+		return nil, err
+	}
+
 	return res, nil
 }
 
