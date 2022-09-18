@@ -51,7 +51,7 @@ func New(t trace.Tracer, serviceName, targetURL string) *gin.Engine {
 	gRPCRouter(r, grpc.V1AlphaRoute)
 	gRPCRouter(r, grpc.HealthRoute)
 	gRPCRouter(r, grpc.PingRoute)
-	gRPCRouter(r, grpc.GiteaRoute(t, targetURL, 200*time.Millisecond))
+	gRPCRouter(r, grpc.GiteaRoute(t, targetURL, 2*time.Millisecond))
 
 	return r
 }

@@ -1,4 +1,4 @@
-package otel
+package signoz
 
 import (
 	"context"

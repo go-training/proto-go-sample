@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/go-training/proto-go-sample/internal/gitea"
-	"github.com/go-training/proto-go-sample/internal/otel"
+	"github.com/go-training/proto-go-sample/internal/otel/signoz"
 	"github.com/go-training/proto-go-sample/internal/ping"
 )
 
 func TestGiteaService(t *testing.T) {
-	s, err := otel.New("testing", "", true)
+	s, err := signoz.New("testing", "", true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func TestGiteaService(t *testing.T) {
 }
 
 func TestPingService(t *testing.T) {
-	s, err := otel.New("testing", "", true)
+	s, err := signoz.New("testing", "", true)
 	if err != nil {
 		t.Fatal(err)
 	}

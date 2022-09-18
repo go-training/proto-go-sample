@@ -10,7 +10,9 @@ import (
 	"time"
 
 	"github.com/go-training/proto-go-sample/cmd/server/chi/router"
-	"github.com/go-training/proto-go-sample/internal/otel"
+	"github.com/go-training/proto-go-sample/internal/core"
+	"github.com/go-training/proto-go-sample/internal/otel/signoz"
+	"github.com/go-training/proto-go-sample/internal/otel/uptrace"
 
 	"github.com/appleboy/graceful"
 	"golang.org/x/net/http2"
@@ -25,6 +27,7 @@ var (
 	insecure     bool
 	collectorURL string
 	targetURL    string
+	otlService   string
 )
 
 func main() {
@@ -35,9 +38,19 @@ func main() {
 	flag.BoolVar(&insecure, "insecure", true, "insecure")
 	flag.StringVar(&collectorURL, "url", "", "collector URL")
 	flag.StringVar(&targetURL, "target", "localhost:8081", "target URL")
+	flag.StringVar(&otlService, "s", "signoz", "otel service")
 	flag.Parse()
 
-	t, err := otel.New(serviceName, collectorURL, insecure)
+	var t core.TracerProvider
+	var err error
+
+	switch otlService {
+	case "signoz":
+		t, err = signoz.New(serviceName, collectorURL, insecure)
+	case "uptrace":
+		t, err = uptrace.New(serviceName)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}

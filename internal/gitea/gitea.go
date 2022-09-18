@@ -72,9 +72,15 @@ func (s *Service) Gitea(
 	newReq := connect.NewRequest(&giteav1.IntroduceRequest{
 		Name: req.Msg.Name,
 	})
-	_, err := grpcGiteaClient.Introduce(ctx, newReq)
+	stream, err := grpcGiteaClient.Introduce(ctx, newReq)
 	if err != nil {
 		return nil, err
+	}
+	for {
+		if ok := stream.Receive(); !ok {
+			break
+		}
+		log.Println("message:", stream.Msg().Sentence)
 	}
 
 	return res, nil
