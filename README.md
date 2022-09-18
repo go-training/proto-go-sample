@@ -2,7 +2,12 @@
 
 [![build sample code](https://github.com/go-training/proto-go-sample/actions/workflows/go.yml/badge.svg)](https://github.com/go-training/proto-go-sample/actions/workflows/go.yml)
 
-Sample Code for proto connect.
+Sample Code for [proto connect](https://github.com/bufbuild/connect-go). Connect is a slim library for building browser and gRPC-compatible HTTP APIs.
+
+## Feature
+
+* Support gRPC and HTTP RESTful API using [connect-go](https://github.com/bufbuild/connect-go) library
+* Support OpenTelemetry protocol (OTLP) and APM like [uptrace](https://uptrace.dev/) and [signoz](https://signoz.io/)
 
 ## Build Server and Client
 
