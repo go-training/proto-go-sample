@@ -17,6 +17,7 @@ import (
 	"github.com/bufbuild/connect-go"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/net/http2"
 )
@@ -35,7 +36,7 @@ func (s *Service) Gitea(
 ) (*connect.Response[giteav1.GiteaResponse], error) {
 	var span trace.Span
 	if s.Tracer != nil {
-		ctx, span = s.Tracer.Start(ctx, "gitea route")
+		ctx, span = s.Tracer.Start(ctx, "gitea route", trace.WithAttributes(attribute.String("hello", "world")))
 		defer span.End()
 	}
 	log.Println("Content-Type: ", req.Header().Get("Content-Type"))

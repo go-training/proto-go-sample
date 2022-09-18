@@ -34,9 +34,15 @@ func New(t trace.Tracer, serviceName, targetURL string) *gin.Engine {
 	r.Use(requestid.New())
 	r.Use(logger.SetLogger(
 		logger.WithLogger(func(c *gin.Context, l zerolog.Logger) zerolog.Logger {
+			if trace.SpanFromContext(c.Request.Context()).SpanContext().IsValid() {
+				l = l.With().
+					Str("trace_id", trace.SpanFromContext(c.Request.Context()).SpanContext().TraceID().String()).
+					Str("span_id", trace.SpanFromContext(c.Request.Context()).SpanContext().SpanID().String()).
+					Logger()
+			}
+
 			return l.With().
 				Str("request_id", requestid.Get(c)).
-				Str("trace_id", trace.SpanFromContext(c.Request.Context()).SpanContext().TraceID().String()).
 				Logger()
 		})))
 	r.StaticFS("/public", http.FS(openapiv2.F))
