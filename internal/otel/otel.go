@@ -4,6 +4,8 @@ import (
 	"context"
 	"io"
 
+	"github.com/go-training/proto-go-sample/internal/core"
+
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
@@ -17,15 +19,23 @@ import (
 )
 
 type Service struct {
-	TP     *sdktrace.TracerProvider
-	Tracer trace.Tracer
+	name string
+	tp   *sdktrace.TracerProvider
+}
+
+func (s *Service) Tracer(opts ...trace.TracerOption) trace.Tracer {
+	return otel.Tracer(s.name, opts...)
+}
+
+func (s *Service) Shutdown(ctx context.Context) error {
+	return s.tp.Shutdown(ctx)
 }
 
 func New(
 	serviceName string,
 	collectorURL string,
 	insecure bool,
-) (*Service, error) {
+) (core.TracerProvider, error) {
 	var exporter sdktrace.SpanExporter
 	var err error
 
@@ -82,7 +92,7 @@ func New(
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 
 	return &Service{
-		TP:     traceProvider,
-		Tracer: otel.Tracer(serviceName),
+		tp:   traceProvider,
+		name: serviceName,
 	}, nil
 }

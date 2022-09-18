@@ -42,7 +42,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer func() {
-		if err := t.TP.Shutdown(context.Background()); err != nil {
+		if err := t.Shutdown(context.Background()); err != nil {
 			log.Fatalf("Error shutting down tracer provider: %v", err)
 		}
 	}()
@@ -50,11 +50,11 @@ func main() {
 	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
-		router.New(t.Tracer, serviceName, targetURL),
+		router.New(t.Tracer(), serviceName, targetURL),
 		&http2.Server{},
 	)
 	if certPath != "" && keyPath != "" {
-		h = router.New(t.Tracer, serviceName, targetURL)
+		h = router.New(t.Tracer(), serviceName, targetURL)
 	}
 
 	srv := &http.Server{

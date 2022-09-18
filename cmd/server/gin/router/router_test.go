@@ -15,12 +15,12 @@ func TestGiteaService(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer func() {
-		if err := s.TP.Shutdown(context.Background()); err != nil {
+		if err := s.Shutdown(context.Background()); err != nil {
 			t.Fatalf("Error shutting down tracer provider: %v", err)
 		}
 	}()
 
-	gitea.MainServiceTest(t, New(s.Tracer, "testing", ""))
+	gitea.MainServiceTest(t, New(s.Tracer(), "testing", ""))
 }
 
 func TestPingService(t *testing.T) {
@@ -29,9 +29,9 @@ func TestPingService(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer func() {
-		if err := s.TP.Shutdown(context.Background()); err != nil {
+		if err := s.Shutdown(context.Background()); err != nil {
 			t.Fatalf("Error shutting down tracer provider: %v", err)
 		}
 	}()
-	ping.MainServiceTest(t, New(s.Tracer, "testing", ""))
+	ping.MainServiceTest(t, New(s.Tracer(), "testing", ""))
 }
