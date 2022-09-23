@@ -4,74 +4,66 @@ import (
 	"context"
 	"errors"
 	"flag"
-	"log"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/go-training/proto-go-sample/cmd/server/gin/router"
+	"github.com/go-training/proto-go-sample/internal/config"
 	"github.com/go-training/proto-go-sample/internal/core"
 	"github.com/go-training/proto-go-sample/internal/otel/signoz"
 	"github.com/go-training/proto-go-sample/internal/otel/uptrace"
 
 	"github.com/appleboy/graceful"
+	"github.com/joho/godotenv"
+	"github.com/rs/zerolog/log"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
-var (
-	listen       int
-	certPath     string
-	keyPath      string
-	serviceName  string
-	insecure     bool
-	collectorURL string
-	targetURL    string
-	otlService   string
-)
-
 func main() {
-	flag.IntVar(&listen, "l", 8080, "listen port")
-	flag.StringVar(&certPath, "c", "", "cert path")
-	flag.StringVar(&keyPath, "k", "", "key portpath")
-	flag.StringVar(&serviceName, "n", "proto-go", "service name")
-	flag.BoolVar(&insecure, "insecure", true, "insecure")
-	flag.StringVar(&collectorURL, "url", "", "collector URL")
-	flag.StringVar(&targetURL, "target", "localhost:8081", "target URL")
-	flag.StringVar(&otlService, "s", "signoz", "otel service")
+	var envfile string
+	flag.StringVar(&envfile, "env-file", ".env", "Read in a file of environment variables")
 	flag.Parse()
 
-	var t core.TracerProvider
-	var err error
+	_ = godotenv.Load(envfile)
+	cfg, err := config.Environ()
+	if err != nil {
+		log.Fatal().
+			Err(err).
+			Msg("invalid configuration")
+	}
+	cfg.InitLogging()
 
-	switch otlService {
+	var t core.TracerProvider
+
+	switch cfg.Otel.ServiceType {
 	case "signoz":
-		t, err = signoz.New(serviceName, collectorURL, insecure)
+		t, err = signoz.New(cfg.Otel.ServiceName, cfg.Otel.CollectorURL, false)
 	case "uptrace":
-		t, err = uptrace.New(serviceName)
+		t, err = uptrace.New(cfg.Otel.ServiceName)
 	}
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("can't load otel service")
 	}
 	defer func() {
 		if err := t.Shutdown(context.Background()); err != nil {
-			log.Fatalf("Error shutting down tracer provider: %v", err)
+			log.Fatal().Err(err).Msg("error shutting down tracer provider")
 		}
 	}()
 
 	m := graceful.NewManager()
 
 	h := h2c.NewHandler(
-		router.New(t.Tracer(), serviceName, targetURL),
+		router.New(t.Tracer(), cfg.Otel.ServiceName, cfg.Otel.TargetURL),
 		&http2.Server{},
 	)
-	if certPath != "" && keyPath != "" {
-		h = router.New(t.Tracer(), serviceName, targetURL)
+	if cfg.Server.Cert != "" && cfg.Server.Key != "" {
+		h = router.New(t.Tracer(), cfg.Otel.ServiceName, cfg.Otel.TargetURL)
 	}
 
 	srv := &http.Server{
-		Addr:              ":" + strconv.Itoa(listen),
+		Addr:              cfg.Server.Port,
 		Handler:           h,
 		ReadHeaderTimeout: time.Second,
 		ReadTimeout:       5 * time.Minute,
@@ -80,9 +72,9 @@ func main() {
 	}
 
 	m.AddRunningJob(func(ctx context.Context) error {
-		log.Println("server listen on port: " + strconv.Itoa(listen))
-		if err := listenAndServe(srv, certPath, keyPath); !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalf("HTTP listen and serve: %v", err)
+		log.Info().Str("port", cfg.Server.Port).Msg("start http server")
+		if err := listenAndServe(srv, cfg.Server.Cert, cfg.Server.Key); !errors.Is(err, http.ErrServerClosed) {
+			log.Fatal().Err(err).Msg("HTTP listen and serve")
 		}
 		return nil
 	})
@@ -91,7 +83,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		if err := srv.Shutdown(ctx); err != nil {
-			log.Fatalf("HTTP shutdown: %v", err)
+			log.Fatal().Err(err).Msg("HTTP shutdown")
 		}
 
 		return nil

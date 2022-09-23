@@ -13,7 +13,9 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-training/proto-go-demo v0.0.0-20220823023730-f7164eecf4ee
 	github.com/go-training/proto-openapiv2-demo v0.0.0-20220827095415-e2b3159bc486
+	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/mattn/go-isatty v0.0.16
 	github.com/riandyrn/otelchi v0.4.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.0
@@ -47,7 +49,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect

@@ -11,6 +11,7 @@ type (
 	Config struct {
 		Logging Logging
 		Server  Server
+		Otel    Otel
 	}
 
 	// Logging provides the logging configuration.
@@ -34,6 +35,13 @@ type (
 		Cert  string `envconfig:"APP_TLS_CERT"`
 		Key   string `envconfig:"APP_TLS_KEY"`
 		Debug bool   `envconfig:"APP_SERVER_DEBUG"`
+	}
+
+	Otel struct {
+		ServiceName  string `envconfig:"APP_SERVICE_NAME" default:"grpcService"`
+		ServiceType  string `envconfig:"APP_SERVICE_TYPE" default:"signoz"`
+		CollectorURL string `envconfig:"APP_SERVICE_NAME" default:"localhost:4317"`
+		TargetURL    string `envconfig:"APP_SERVICE_NAME" default:"localhost:8081"`
 	}
 )
 
