@@ -38,7 +38,7 @@ func main() {
 
 	switch cfg.Otel.ServiceType {
 	case "signoz":
-		t, err = signoz.New(cfg.Otel.ServiceName, cfg.Otel.CollectorURL, false)
+		t, err = signoz.New(cfg.Otel.ServiceName, cfg.Otel.CollectorURL, true)
 	case "uptrace":
 		t, err = uptrace.New(cfg.Otel.ServiceName)
 	}
