@@ -40,7 +40,7 @@ func main() {
 	case "signoz":
 		t, err = signoz.New(cfg.Otel.ServiceName, cfg.Otel.CollectorURL, true)
 	case "uptrace":
-		t, err = uptrace.New(cfg.Otel.ServiceName)
+		t = uptrace.New(cfg.Otel.ServiceName)
 	}
 
 	if err != nil {
