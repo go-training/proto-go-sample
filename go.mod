@@ -3,7 +3,7 @@ module github.com/go-training/proto-go-sample
 go 1.19
 
 require (
-	github.com/appleboy/go-otel v0.0.0-20220924072033-9aa2537a2804
+	github.com/appleboy/go-otel v0.0.0-20220924081853-34b674ff8b66
 	github.com/appleboy/graceful v0.0.4
 	github.com/bufbuild/connect-go v0.4.0
 	github.com/bufbuild/connect-grpchealth-go v0.1.0

@@ -38,14 +38,17 @@ func main() {
 
 	switch cfg.Otel.ServiceType {
 	case "signoz":
-		t, err = signoz.New(cfg.Otel.ServiceName, cfg.Otel.CollectorURL, true)
+		t, err = signoz.New(
+			cfg.Otel.ServiceName,
+			signoz.WithCollectorURL(cfg.Otel.CollectorURL),
+		)
+		if err != nil {
+			log.Fatal().Err(err).Msg("can't load otel service")
+		}
 	case "uptrace":
 		t = uptrace.New(cfg.Otel.ServiceName)
 	}
 
-	if err != nil {
-		log.Fatal().Err(err).Msg("can't load otel service")
-	}
 	defer func() {
 		if err := t.Shutdown(context.Background()); err != nil {
 			log.Fatal().Err(err).Msg("error shutting down tracer provider")

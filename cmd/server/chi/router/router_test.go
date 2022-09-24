@@ -11,7 +11,7 @@ import (
 )
 
 func TestGiteaService(t *testing.T) {
-	s, err := signoz.New("testing", "", true)
+	s, err := signoz.New("testing")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func TestGiteaService(t *testing.T) {
 }
 
 func TestPingService(t *testing.T) {
-	s, err := signoz.New("testing", "", true)
+	s, err := signoz.New("testing")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -39,6 +39,10 @@ github.com/appleboy/go-otel v0.0.0-20220924032544-608d8ecd6a33 h1:E8MCtUzQBRJ+Lu
 github.com/appleboy/go-otel v0.0.0-20220924032544-608d8ecd6a33/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
 github.com/appleboy/go-otel v0.0.0-20220924072033-9aa2537a2804 h1:++0Q1CiPB4tq7voueikt8dgxxPTuD4VZ4fCSUNiyL5s=
 github.com/appleboy/go-otel v0.0.0-20220924072033-9aa2537a2804/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
+github.com/appleboy/go-otel v0.0.0-20220924075842-e4601a2e0a75 h1:8laJ4SntCPOcQqVVHOXqAWK2uzzQlUa4kLTmbyFrBGs=
+github.com/appleboy/go-otel v0.0.0-20220924075842-e4601a2e0a75/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
+github.com/appleboy/go-otel v0.0.0-20220924081853-34b674ff8b66 h1:2uVx2quaxKsDsM0sbJOqpTKPjZpmKHBCdjjH6t/7/mU=
+github.com/appleboy/go-otel v0.0.0-20220924081853-34b674ff8b66/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
 github.com/appleboy/graceful v0.0.4 h1:Q4LCeq4DFy59qiACLtuH+mSqDERtUzwkQbCWpRaWwvQ=
 github.com/appleboy/graceful v0.0.4/go.mod h1:Q2mVx0t+N0lCDZc5MJudbcpTm6cgGM/J2gZCZIqD9dc=
 github.com/benbjohnson/clock v1.3.0 h1:ip6w0uFQkncKQ979AypyG0ER7mqUSBdKLOgAle/AT8A=
