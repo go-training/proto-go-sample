@@ -9,6 +9,17 @@ Sample Code for [proto connect](https://github.com/bufbuild/connect-go). Connect
 * Support gRPC and HTTP RESTful API using [connect-go](https://github.com/bufbuild/connect-go) library
 * Support OpenTelemetry protocol (OTLP) and APM like [uptrace](https://uptrace.dev/) and [signoz](https://signoz.io/)
 
+## Install signoz
+
+Install SigNoz Using Docker Compose
+
+```sh
+git clone -b main https://github.com/SigNoz/signoz.git && cd signoz/deploy/
+docker-compose -f docker/clickhouse-setup/docker-compose.yaml up -d
+```
+
+Ensure that the ports `3301`, `4317` and `4318` are open on the machine where you install SigNoz.
+
 ## Build Server and Client
 
 ```sh

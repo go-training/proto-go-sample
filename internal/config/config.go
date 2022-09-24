@@ -38,10 +38,10 @@ type (
 	}
 
 	Otel struct {
-		ServiceName  string `envconfig:"APP_SERVICE_NAME" default:"grpcService"`
-		ServiceType  string `envconfig:"APP_SERVICE_TYPE" default:"signoz"`
-		CollectorURL string `envconfig:"APP_SERVICE_NAME" default:"localhost:4317"`
-		TargetURL    string `envconfig:"APP_SERVICE_NAME" default:"localhost:8081"`
+		ServiceName  string `envconfig:"APP_OTEL_SERVICE_NAME" default:"grpcService"`
+		ServiceType  string `envconfig:"APP_OTEL_SERVICE_TYPE" default:"signoz"`
+		CollectorURL string `envconfig:"APP_OTEL_COLLECTOR_URL" default:"localhost:4317"`
+		TargetURL    string `envconfig:"APP_OTEL_TARGET_URL" default:"localhost:8081"`
 	}
 )
 
