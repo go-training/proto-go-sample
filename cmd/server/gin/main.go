@@ -9,10 +9,10 @@ import (
 
 	"github.com/go-training/proto-go-sample/cmd/server/gin/router"
 	"github.com/go-training/proto-go-sample/internal/config"
-	"github.com/go-training/proto-go-sample/internal/core"
-	"github.com/go-training/proto-go-sample/internal/otel/signoz"
-	"github.com/go-training/proto-go-sample/internal/otel/uptrace"
 
+	otel "github.com/appleboy/go-otel"
+	"github.com/appleboy/go-otel/signoz"
+	"github.com/appleboy/go-otel/uptrace"
 	"github.com/appleboy/graceful"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
@@ -34,7 +34,7 @@ func main() {
 	}
 	cfg.InitLogging()
 
-	var t core.TracerProvider
+	var t otel.TracerProvider
 
 	switch cfg.Otel.ServiceType {
 	case "signoz":

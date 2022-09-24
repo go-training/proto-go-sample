@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	"github.com/go-training/proto-go-sample/internal/gitea"
-	"github.com/go-training/proto-go-sample/internal/otel/signoz"
 	"github.com/go-training/proto-go-sample/internal/ping"
+
+	"github.com/appleboy/go-otel/signoz"
 )
 
 func TestGiteaService(t *testing.T) {
