@@ -35,12 +35,6 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
-github.com/appleboy/go-otel v0.0.0-20220924032544-608d8ecd6a33 h1:E8MCtUzQBRJ+LuVVm8AM8dJtJ+7mFeph6auG41lfkkI=
-github.com/appleboy/go-otel v0.0.0-20220924032544-608d8ecd6a33/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
-github.com/appleboy/go-otel v0.0.0-20220924072033-9aa2537a2804 h1:++0Q1CiPB4tq7voueikt8dgxxPTuD4VZ4fCSUNiyL5s=
-github.com/appleboy/go-otel v0.0.0-20220924072033-9aa2537a2804/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
-github.com/appleboy/go-otel v0.0.0-20220924075842-e4601a2e0a75 h1:8laJ4SntCPOcQqVVHOXqAWK2uzzQlUa4kLTmbyFrBGs=
-github.com/appleboy/go-otel v0.0.0-20220924075842-e4601a2e0a75/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
 github.com/appleboy/go-otel v0.0.0-20220924081853-34b674ff8b66 h1:2uVx2quaxKsDsM0sbJOqpTKPjZpmKHBCdjjH6t/7/mU=
 github.com/appleboy/go-otel v0.0.0-20220924081853-34b674ff8b66/go.mod h1:77wAfO6IClmNkqr3DGHU+mp7gIE4kIH3ZhNavpprTzE=
 github.com/appleboy/graceful v0.0.4 h1:Q4LCeq4DFy59qiACLtuH+mSqDERtUzwkQbCWpRaWwvQ=
@@ -225,8 +219,8 @@ github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
-github.com/riandyrn/otelchi v0.4.0 h1:btWguNWE2NluzNqRNaqAdJ809GKP1CjZEi8UP4AdYGw=
-github.com/riandyrn/otelchi v0.4.0/go.mod h1:gYlFYJYyLUmgxgJFKE/NFno7ljcu2lCd8+aOlD8oLTw=
+github.com/riandyrn/otelchi v0.5.0 h1:MJgGWsK8678BEgcFK0bXN0KCT+cmZenrLbfwcVdmMno=
+github.com/riandyrn/otelchi v0.5.0/go.mod h1:TdZGrioq34o3UK86q/3v220f4Zv/UOlffx74hSWlZsQ=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
@@ -283,7 +277,6 @@ go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.10.0 h1:pDDYmo0QadUPal5fwXo
 go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.10.0/go.mod h1:Krqnjl22jUJ0HgMzw5eveuCvFDXY4nSYb4F8t5gdrag=
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.10.0 h1:KtiUEhQmj/Pa874bVYKGNVdq8NPKiacPbaRRtgXi+t4=
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.10.0/go.mod h1:OfUCyyIiDvNXHWpcWgbF+MWvqPZiNa3YDEnivcnYsV0=
-go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.3.0/go.mod h1:PQLM+xJ3EMSZU9rMevmw+4nH1efyp23CW/nD9BlB3sg=
 go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.10.0 h1:c9UtMu/qnbLlVwTwt+ABrURrioEruapIslTDYZHJe2w=
 go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.10.0/go.mod h1:h3Lrh9t3Dnqp3NPwAZx7i37UFX7xrfnO1D+fuClREOA=
 go.opentelemetry.io/otel/metric v0.31.0 h1:6SiklT+gfWAwWUR0meEMxQBtihpiEs4c+vL9spDTqUs=
