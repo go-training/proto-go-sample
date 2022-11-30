@@ -1,7 +1,6 @@
 package router
 
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -18,7 +17,6 @@ import (
 
 func grpcHandler(h http.Handler) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Println("protocol version:", c.Request.Proto)
 		h.ServeHTTP(c.Writer, c.Request)
 	}
 }
@@ -46,6 +44,12 @@ func New(t trace.Tracer, serviceName, targetURL string) *gin.Engine {
 				Logger()
 		})))
 	r.StaticFS("/public", http.FS(openapiv2.F))
+
+	r.POST("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"ping": "pong",
+		})
+	})
 
 	gRPCRouter(r, grpc.V1Route)
 	gRPCRouter(r, grpc.V1AlphaRoute)
