@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/appleboy/go-otel v0.0.1
 	github.com/appleboy/graceful v0.0.4
-	github.com/bufbuild/connect-go v1.4.1
+	github.com/bufbuild/connect-go v1.5.2
 	github.com/bufbuild/connect-grpchealth-go v1.0.0
 	github.com/bufbuild/connect-grpcreflect-go v1.0.0
 	github.com/gin-contrib/logger v0.2.5
